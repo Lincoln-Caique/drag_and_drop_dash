@@ -1,32 +1,20 @@
 /* eslint-disable no-unused-vars */
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import GlobalStyle from './global';
 import styled from 'styled-components';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
-const Container = styled.div`
-  display: inline-table;
-  width: 50%;
-  background-color: ${props => props.color};
-  color: #fff;
-  justify-content: center;
-  align-items: center;
-
-`;
-
-const WhapperGraph = styled.div`
-  display: flex;
-  height: 400px;
-  width: 600px;
-  margin-top: 20px;
-  background-color: ${props => props.color};
-  color: #fff;
+const Whapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: inline-flex;
 `;
 
 const Main = styled.ul`
   list-style: none;
   padding-left: 0;
+  width: 50%;
 `;
 
 const ContainerGraph = styled.li`
@@ -85,16 +73,28 @@ const graphsDate = [
     },
     "userId": 43
   }
-]
+];
+
+const graphsDateRight = [];
 
 
 
 function App() {
 
-
-  console.log(graphsDate);
-
   const [graphs, updateGraph] = useState(graphsDate);
+  const [graphsRight, updateGraphRight] = useState(graphsDateRight);
+
+  console.log(graphs);
+  // const [hasLoaded, setHasLoaded] = useState(false);
+
+  // useEffect(() => {
+  //   const existingGraphs = JSON.parse(
+  //     localStorage.getItem("graph_positions")
+  //   );
+  //   updateGraph(existingGraphs);
+  //   setHasLoaded(true);
+
+  // }, []);
 
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
@@ -106,38 +106,70 @@ function App() {
     updateGraph(items);
   };
 
+  // useEffect(() => {
+  //   localStorage.setItem('graph_positions', JSON.stringify(graphs))
+  // }, [graphs])
+
+
 
 
   return (
     <>
       <GlobalStyle />
-      <DragDropContext onDragEnd={handleOnDragEnd}>
+      <Whapper>
+        <DragDropContext onDragEnd={handleOnDragEnd}>
 
-        <Droppable droppableId='graphs'>
-          {(provided) => (
-            <Main  {...provided.droppableProps} ref={provided.innerRef}>
-              {graphs.map(({ id, type, tag }, index) => {
-                return (
-                  <Draggable key={id} draggableId={id} index={index}>
-                    {(provided) => (
-                      <ContainerGraph ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                        <div >
-                          <h1 >{tag}</h1>
-                        </div>
-                        <p className='type'>
-                          Type:{type}
-                        </p>
-                      </ContainerGraph>
-                    )}
-                  </Draggable>
-                );
-              })}
-              {provided.placeholder}
-            </Main>
-          )}
-        </Droppable>
+          <Droppable droppableId='graphs'>
+            {(provided) => (
+              <Main  {...provided.droppableProps} ref={provided.innerRef}>
+                Esquerda
+                {graphs.map(({ id, type, tag }, index) => {
+                  return (
+                    <Draggable key={id} draggableId={id} index={index}>
+                      {(provided) => (
+                        <ContainerGraph ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                          <div >
+                            <h1 >{tag}</h1>
+                          </div>
+                          <p className='type'>
+                            Type:{type}
+                          </p>
+                        </ContainerGraph>
+                      )}
+                    </Draggable>
+                  );
+                })}
+                {provided.placeholder}
+              </Main>
+            )}
+          </Droppable>
 
-      </DragDropContext>
+          <Droppable droppableId='graphs2'>
+            {(provided) => (
+              <Main  {...provided.droppableProps} ref={provided.innerRef}>
+                Direita
+                {graphsRight?.map(({ id, type, tag }, index) => {
+                  return (
+                    <Draggable key={id} draggableId={id} index={index}>
+                      {(provided) => (
+                        <ContainerGraph ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                          <div >
+                            <h1 >{tag}</h1>
+                          </div>
+                          <p className='type'>
+                            Type:{type}
+                          </p>
+                        </ContainerGraph>
+                      )}
+                    </Draggable>
+                  );
+                })}
+                {provided.placeholder}
+              </Main>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </Whapper>
 
 
     </>
