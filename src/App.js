@@ -9,12 +9,15 @@ const Whapper = styled.div`
   width: 100%;
   height: 100%;
   display: inline-flex;
+ 
 `;
 
 const Main = styled.ul`
   list-style: none;
   padding-left: 0;
   width: 50%;
+  /* min-height: 800px; */
+  background-color: ${props => props.color};
 `;
 
 const ContainerGraph = styled.li`
@@ -41,7 +44,7 @@ const ContainerGraph = styled.li`
 const graphsDate = [
 
   {
-    "id": "3090", "type": 1, "tag": "1", "period": 2592000, "sensors": {
+    "id": 3090, "type": 1, "tag": "1", "period": 2592000, "sensors": {
       "temp": [
         {
           "mac": "4548AAEE0001",
@@ -52,7 +55,7 @@ const graphsDate = [
     "userId": 43
   },
   {
-    "id": "3091", "type": 2, "tag": "2", "period": 0, "sensors": {
+    "id": 3091, "type": 2, "tag": "2", "period": 0, "sensors": {
       "fftx": [
         {
           "mac": "4548AAEE0001",
@@ -63,7 +66,7 @@ const graphsDate = [
     "userId": 43
   },
   {
-    "id": "3093", "type": 3, "tag": "3", "period": 0, "sensors": {
+    "id": 3093, "type": 3, "tag": "3", "period": 0, "sensors": {
       "accRawy": [
         {
           "mac": "4548AAEE0004",
@@ -84,7 +87,6 @@ function App() {
   const [graphs, updateGraph] = useState(graphsDate);
   const [graphsRight, updateGraphRight] = useState(graphsDateRight);
 
-  console.log(graphs);
   // const [hasLoaded, setHasLoaded] = useState(false);
 
   // useEffect(() => {
@@ -125,9 +127,12 @@ function App() {
                 Esquerda
                 {graphs.map(({ id, type, tag }, index) => {
                   return (
-                    <Draggable key={id} draggableId={id} index={index}>
+                    <Draggable key={id} draggableId={`${id}`} index={index}>
                       {(provided) => (
-                        <ContainerGraph ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                        <ContainerGraph 
+                        ref={provided.innerRef} 
+                        {...provided.draggableProps}
+                         {...provided.dragHandleProps}>
                           <div >
                             <h1 >{tag}</h1>
                           </div>
@@ -146,13 +151,16 @@ function App() {
 
           <Droppable droppableId='graphs2'>
             {(provided) => (
-              <Main  {...provided.droppableProps} ref={provided.innerRef}>
+              <Main color='blue' {...provided.droppableProps} ref={provided.innerRef}>
                 Direita
                 {graphsRight?.map(({ id, type, tag }, index) => {
                   return (
-                    <Draggable key={id} draggableId={id} index={index}>
+                    <Draggable key={id} draggableId={`${id}`} index={index}>
                       {(provided) => (
-                        <ContainerGraph ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                        <ContainerGraph 
+                        ref={provided.innerRef} 
+                        {...provided.draggableProps} 
+                        {...provided.dragHandleProps}>
                           <div >
                             <h1 >{tag}</h1>
                           </div>
